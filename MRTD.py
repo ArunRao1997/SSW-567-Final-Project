@@ -1,9 +1,5 @@
+"""MRTD.py"""
 from string import ascii_uppercase, digits
-from tkinter import END
-import pycountry
-from googletrans import Translator
-import time
-import datetime
 
 CHAR_DICT = {
     '<': 0,
@@ -48,6 +44,7 @@ CHAR_DICT = {
 printable = digits + ascii_uppercase + "<"+";"
 
 def algorithm(string: str) -> str:
+    """Function for weights"""
     string = string.upper().replace("<", "0")
     weight = [7, 3, 1]
     summation = 0
@@ -57,39 +54,42 @@ def algorithm(string: str) -> str:
     summation %=10
     return summation
 
-def vertify (string0: str) -> str:
+def verify (string0: str) -> str:
+    """function to verify"""
     for i in range(len(string0)):
         c = string0[i]
         if c not in printable:
-            return ("contains invalid characters")
+            return "contains invalid characters"
     string1 = string0[45:]
     passport = string1[0:9]
-    passport_vertify_code = int(string1[9])
+    passport_verify_code = int(string1[9])
     birth = string1[13:19]
-    birth_vertify_code = int(string1[19])
+    birth_verify_code = int(string1[19])
     validity = string1[21:27]
-    validity_vertify_code = int(string1[27])
+    validity_verify_code = int(string1[27])
     personal_code = string1[28:43]
-    personal_vertify_code = int(string1[43])
+    personal_verify_code = int(string1[43])
 
-    if algorithm(passport) != passport_vertify_code:
-        return("passport info error")
-    elif algorithm(birth) != birth_vertify_code:
-        return("birth date info error")
-    elif algorithm(validity) != validity_vertify_code:
-        return("validity info error")
-    elif algorithm(personal_code) != personal_vertify_code:
-        return("personal code error")
+    if algorithm(passport) != passport_verify_code:
+        return "passport info error"
+    elif algorithm(birth) != birth_verify_code:
+        return "birth date info error"
+    elif algorithm(validity) != validity_verify_code:
+        return "validity info error"
+    elif algorithm(personal_code) != personal_verify_code:
+        return "personal code error"
     else:
-        return("passed")
+        return "passed"
 
 def char_to_value(char):
+    """Returns numeric value for input char used in check digit algorithm"""
     # Returns numeric value for input char used in check digit algorithm
     char = char.lower()
     return CHAR_DICT[char]
 
 
 def get_check_digit(input):
+    """Takes string of alphanumeric characters and returns check digit"""
     # Takes string of alphanumeric characters and returns check digit
     weights = [7, 3, 1]
     sum_ = sum(char_to_value(char) * weights[idx % 3]
@@ -97,10 +97,12 @@ def get_check_digit(input):
     return str(sum_ % 10)
 
 def scan_passport():
+    """Function to scan passport"""
     #empty method
     return 'scanned'
 
 def extract_line1(line):
+    """Function to extract line 1"""
     # Extracts data from the first line of the passport string
     val = line.split('<')
     res = [i for i in val if i.strip()]
@@ -116,8 +118,9 @@ def extract_line1(line):
         "last_name": last_name,
         "given_name": given_name
     }
-    
+
 def encode(string0: str) -> str:
+    """Function to encode"""
     string1 = string0[45:]
     passport_number = string1[0:9]
     country_code = string1[10:13]
@@ -131,7 +134,7 @@ def encode(string0: str) -> str:
     d['line2'] =  k
     k['passport_number'] = passport_number
     k['country_code'] = country_code
-    k['birth_date'] = birth_date 
+    k['birth_date'] = birth_date
     k['sex'] = sex
     k['expiration_date'] = expiration_date
     k['personal_number'] = personal_number
@@ -139,6 +142,7 @@ def encode(string0: str) -> str:
     return d
 
 def decode(dict):
+    """Functtion to decode"""
     dict1 = dict["line1"]
     dict2 = dict["line2"]
     issc = dict1["issuing_country"]
@@ -152,6 +156,7 @@ def decode(dict):
     pn = dict2["personal_number"]
     line1decode = "P<" + issc + lastname + "<<" + givenname.replace(' ','<')
     line1decoded1 = line1decode.ljust(44,'<')
-    line2decode = passport + str(algorithm(passport)) + country + birth + str(algorithm(birth)) + sex +exd + str(algorithm(exd)) + pn + "<<<<<<" + str(algorithm(pn))
+    line2decode = passport + str(algorithm(passport)) + country + birth + str(algorithm(birth))
+    line2decode = line2decode + sex +exd + str(algorithm(exd)) + pn + "<<<<<<" + str(algorithm(pn))
     decoded = line1decoded1 +";"+line2decode
     return decoded
