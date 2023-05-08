@@ -1,0 +1,7 @@
+[run]
+source = MRTD.py, MTTD_test.py
+
+[report]
+omit =
+    performance.py
+    *site-packages/_distutils_hack/__init__.py

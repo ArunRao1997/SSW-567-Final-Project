@@ -1,0 +1,21 @@
+version: 2.1
+orbs:
+    python: circleci/python@2.0.1
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install pytest
+            pip install json
+            pytest --junitxml=test-results/junit.xml MTTDtest.py
+      - store_test_results:
+          path: test-results
+
+workflows:
+  test_get_repo:
+    jobs:
+      - build-and-test
