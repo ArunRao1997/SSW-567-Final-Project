@@ -22,7 +22,7 @@ def readData(jsonFile):
 def testPerformance(jsonfiles, function):
 
     #Loading the files
-    print("running: ", jsonfiles)
+    print("Currently running: ", jsonfiles)
     #striping from the end of filename
     title = jsonfiles[:-5] 
 
@@ -36,27 +36,25 @@ def testPerformance(jsonfiles, function):
         while iterations <= 10000:
             #Starting the timer using python timer function
             start = timer.perf_counter()
-            for j in range(iterations):
+            for iteration in range(iterations):
                 # Process the number of records specified by the iterations
-                function(data[j])
+                function(data[iteration])
             ##Stopping the timer by python timer functio
             stop = timer.perf_counter()
             #Calculating the time
             time = stop - start
-            printResult = f"Processed {iterations} records in {time:.4f} seconds."
-            result = [iterations, time]
-            # Write the processing time and number of records to the csv file
-            writer.writerow(result)
-            print(printResult)
+            #Writing the iterations and time in the csv file
+            writer.writerow([iterations, time])
+            print("Processed ",iterations, " records in ",round(time,4),"seconds.")
 
-            # Increase the number of records to be processed
+            #Increasign the number of records to processed
             if iterations == 100:
                 iterations = 1000
                 continue
             iterations += 1000
-
+    #prints which file is done processesing
     print("Done processing - ",title)
 
-# Run the test for encode and decode with different files
+#Runing the function for encode and decode for decoded and encoded records
 testPerformance("records_decoded.json", encode)
 testPerformance("records_encoded.json", decode)
