@@ -37,10 +37,11 @@ class TestDecodeEncode(unittest.TestCase):
         self.expected_result4 = 'P<CIVLYNN<<NEVEAH<BRAM<<<<<<<<<<<<<<<<<<<<<<;W620126G54CIV5910106F9707302AJ010215I<<<<<<6'
         self.expected_result5 = 'P<CIVLYNN<<NEVEAH<BRAM<<<<<<<<<<<<<<<<<<<<<<'
 
+    # Test decode function for line 1 and line 2
     def test_decode(self):
         """Test the decode function with valid input."""
-        self.assertEqual(MRTD.decode(self.line), json.loads(self.expected_result1),
-                         'Line 1 and line 2 decoded successfully')
+        self.assertEqual(MRTD.decode(self.line), self.expected_result1,
+                                'Line 1 and line 2 decoded successfully')
 
     # Test decode function containing country code
     def test_decode2(self):
