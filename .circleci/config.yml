@@ -10,7 +10,6 @@ jobs:
       - run:
           command: |
             pip install pytest
-            pip install json
             pytest --junitxml=test-results/junit.xml MTTDtest.py
       - store_test_results:
           path: test-results
