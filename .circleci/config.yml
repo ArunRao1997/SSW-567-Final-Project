@@ -12,7 +12,7 @@ jobs:
             pip install pytest
             pytest --junitxml=test-results/junit.xml
             cd Part-2/
-            python MTTDtest.py
+            MTTDtest.py
       - store_test_results:
           path: test-results
 
