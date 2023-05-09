@@ -1,17 +1,25 @@
 version: 2.1
 orbs:
-    python: circleci/python@2.0.1
+  python: circleci/python@2.0.1
 jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.10.2
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
+          name: Install dependencies
           command: |
             pip install pytest
+      - run:
+          name: Create test results directory
+          command: mkdir -p test-results
+      - run:
+          name: Run tests and generate test results
+          command: |
             cd Part-2/
-            pytest MTTDtest.py --junitxml=test-results/junit.xml
+            pytest MTTDtest.py --junitxml=../test-results/junit.xml
       - store_test_results:
           path: test-results
 
