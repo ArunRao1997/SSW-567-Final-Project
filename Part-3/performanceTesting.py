@@ -2,7 +2,9 @@
 import time as timer
 import csv
 import json
+import sys
 from MRTD import decode, encode
+
 
 # This file tests the speed of encode and decode in MRTD.py
 
