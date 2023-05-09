@@ -6,53 +6,55 @@ from MRTD import decode, encode
 
 # This file tests the speed of encode and decode in MRTD.py
 
-def readData(file):
-    """
-    Load the data from json file and return the data by stripping the file name extension.
-    """
-    with open(file) as f:
-        data = json.load(f)
-    data = data[file[:-5]]
+
+#This function opens the file, reads the data and returns it by taking off the extension of the filename.
+def readData(jsonFile):
+
+    #the file is opened as jsonData
+    with open(jsonFile) as jsonData:
+        data = json.load(jsonData) #returns json object in key/value pair
+
+    data = data[jsonFile[:-5]] 
     return data
 
-def testPerformance(file, function):
-    """
-    Test the performance of encode and decode functions on the given file.
-    """
-    # Load the files
-    print("running: ", file)
-    title = file[:-5]  # strip ending from the file name
-    # Open the csv file for writing the results
-    with open(f'performance_{title}.csv', 'w') as f:
+#this function tests the performance of the functions - encode and decode
+#given csv files are used
+def testPerformance(jsonfiles, function):
+
+    #Loading the files
+    print("Currently running: ", jsonfiles)
+    #striping from the end of filename
+    title = jsonfiles[:-5] 
+
+    #0pen csv files
+    with open('performance_'+title+'.csv', 'w') as file:
         headers = ["lines read (n)", "time (s)"]
-        writer = csv.writer(f)
+        writer = csv.writer(file)
         writer.writerow(headers)
-
-        data = readData(file)
-        iterations = 100
+        data = readData(jsonfiles)
+        iterations = 100 #initialising iterations to 100
         while iterations <= 10000:
-            # Start the timer
+            #Starting the timer using python timer function
             start = timer.perf_counter()
-            for j in range(iterations):
+            for iteration in range(iterations):
                 # Process the number of records specified by the iterations
-                function(data[j])
-            # Stop the timer
+                function(data[iteration])
+            ##Stopping the timer by python timer functio
             stop = timer.perf_counter()
-            time = stop - start  # Calculate the processing time
-            printResult = f"Processed {iterations} records in {time:.4f} seconds."
-            result = [iterations, time]
-            # Write the processing time and number of records to the csv file
-            writer.writerow(result)
-            print(printResult)
+            #Calculating the time
+            time = stop - start
+            #Writing the iterations and time in the csv file
+            writer.writerow([iterations, time])
+            print("Processed ",iterations, " records in ",round(time,4),"seconds.")
 
-            # Increase the number of records to be processed
+            #Increasing the number of records to be processed
             if iterations == 100:
                 iterations = 1000
                 continue
             iterations += 1000
+    #prints which file is done processesing
+    print("Done processing - ",title)
 
-    print(f"Done processing {title}.")
-
-# Run the test for encode and decode with different files
+#Runing the function for encode and decode for decoded and encoded records
 testPerformance("records_decoded.json", encode)
 testPerformance("records_encoded.json", decode)
