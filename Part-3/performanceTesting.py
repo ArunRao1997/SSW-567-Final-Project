@@ -28,7 +28,7 @@ def testPerformance(jsonfiles, function):
 
     #0pen csv files
     with open('performance_'+title+'.csv', 'w') as file:
-        headers = ["lines read (n)", "time (s)"]
+        headers = ["number of lines read (n)", "time in seconds (s)"]
         writer = csv.writer(file)
         writer.writerow(headers)
         data = readData(jsonfiles)
