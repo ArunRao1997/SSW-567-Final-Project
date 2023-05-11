@@ -1,8 +1,13 @@
 """
 Module for parsing and generating Machine Readable Travel Documents (MRTD).
 """
+
+
+### Dr. B: See comments below. Code seemes fairly well structured on the whole.
+
 import json
 
+#### Dr. B: Isn't there a library function that does this? BTW, passport entries are all in upper case.
 CHAR_DICT = {
     '<': 0,
     '0': 0,
@@ -69,7 +74,7 @@ def extract_line1(line):
     res = [i for i in val if i.strip()]
     if res[0] != "P":
         return 1
-    country_code = res[1][:3]
+    country_code = res[1][:3]   ### Dr. B.: Best not to use wired-in constants here, to ease maintenance and understanding.
     last_name = res[1][3:]
     first_name = res[2]
     middle_name = res[3] if len(res) == 4 else None
@@ -90,7 +95,7 @@ def extract_line2(line):
     country_code = res[0][10:13]
     birth_date = res[0][13:19]
     birth_date_check_digit = res[0][19]
-    sex = res[0][20]
+    sex = res[0][20] ### Dr. B.: Best not to use wired-in constants here, to ease maintenance and understanding.
     expiry_date = res[0][21:27]
     expiry_date_check_digit = res[0][27]
     personal_number = res[0][28:]
@@ -123,7 +128,7 @@ def decode(string):
     line2 = extract_line2(lines[1])
     if line1["issuing_country"] != line2['country_code']:
         # Invalid MRZ data
-        print("Error: invalid MRZ data")
+        print("Error: invalid MRZ data")   ####Dr. B.: I'm not sure about that. The issuing country may be offering asylum to someone from another country.
         return False
     result = {"line1": line1, "line2": line2}
     result = json.dumps(result)
