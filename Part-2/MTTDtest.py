@@ -45,14 +45,14 @@ class TestDecodeEncode(unittest.TestCase):
 
     # Test decode function containing country code
     def test_decode2(self):
-        """Test the decode function with a different country code."""
+        """Test the decode function with a different country code."""   ###Dr. B.: The country code looks the same, CIV (Cote d'Ivoire)
         line = 'P<CIVLYNN<<NEVEAH<BRAM<<<<<<<<<<<<<<<<<<<<<<;W620126G54RIS5910106F9707302AJ010215I<<<<<<6'
         self.assertNotEqual(MRTD.decode(line), json.loads(self.expected_result1), 'Different country code')
 
     # Test extract1 function for line 1
     def test_find_val1(self):
         """Test the extract_line1 function with valid input."""
-        self.assertEqual(MRTD.extract_line1('P<CIVLYNN<<NEVEAH<BRAM<<<<<<<<<<<<<<<<<<<<<<'),
+        self.assertEqual(MRTD.extract_line1('P<CIVLYNN<<NEVEAH<BRAM<<<<<<<<<<<<<<<<<<<<<<'), ###Dr.B.: you are using this string more than once. Store in a variable.
                          self.expected_result2, 'Got expected result2')
 
     # Test extract function if no document type is given
